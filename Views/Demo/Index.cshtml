@@ -1,5 +1,101 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model DropDownDemo.Models.Category
+@{ 
+    <form asp-controller="Demo" asp-action="Index" method="post" class="form-horizontal" role="form">
+        <div class="form-group">
+            <div class="row">
+                <div class="alert-danger" asp-validation-summary="ModelOnly">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <label asp-for="CategoryName" class="custom-control-label">
+                    </label>
+                    <select asp-for="CategoryID"
+                            class="form-control"
+                            asp-items="@(new SelectList(@ViewBag.ListofCategory,"CategoryID","CategoryName"))">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- next dropdown -->
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <label class="control-label">
+                        SubCategoryName
+                    </label>
+                    <select class="form-control" id="SubCategoryID" name="SubCategoryID" asp-for="SubCategoryID"
+                            asp-items="@(new SelectList(string.Empty,"SubCategoryID", "SubCategoryName"))"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <label class="contorl-label">
+                        ProductName
+                    </label>
+                    <select class="form-control" id="ProductID" name="ProductID" asp-for="ProductID"
+                            asp-items="@(new SelectList(string.Empty,"ProductID", "ProductName"))"></select>
+
+                </div>
+            </div>
+        </div>
+
+                    <!-- submission -->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-lg-4">
+                                <input id="Submit1" type="submit" value="submit" />
+                            </div>
+                        </div>
+                    </div>
+    </form>
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<script type="text/javascript">
+    // this inserts 'select into the dropdown boxes on initial page load
+    $(document).ready(function () {
+        console.log("JQuery active");
+        var items = "<option value='0'>Select</option>";
+        $('#SubCategoryID').html(items);
+        $('#ProductID').html(items);
+    });
+
+    // lets jquery
+
+    $('#CategoryID').change(function () {
+        var url = '@Url.Content("~/")' + "Demo/GetSubCategory";
+        var ddlsource = "#CategoryID";
+        console.log("in getsubcategory");
+        $.getJSON(url, { CategoryID: $(ddlsource).val() }, function (data) {
+            var items = '';
+            $("#SubCategoryID").empty();
+            $.each(data, function (i, subcategory) {
+                items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
+            });
+            $('#SubCaegoryID').html(items);
+        });
+    });
+
+    //
+
+     $('#SubCategoryID').change(function () {
+        var url = '@Url.Content("~/")' + "Demo/GetProducts";
+         var ddlsource = "#SubCategoryID";
+         console.log(" in getproducts");
+        $.getJSON(url, { SubCategoryID: $(ddlsource).val() }, function (data) {
+            var items = '';
+            $("#ProductID").empty();
+            console.log("??");
+            $.each(data, function (i, product) {
+                items += "<option value='" + product.value + "'>" + product.text + "</option>";
+            });
+            $('#ProductID').html(items);
+        });
+    });
+
+
+
+
+</script>

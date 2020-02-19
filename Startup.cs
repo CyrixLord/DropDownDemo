@@ -32,7 +32,7 @@ namespace DropDownDemo
             // let's add that dbcontect so we can use dependency injection to inject dbcontext object in our project
             // 
 
-            var connection = Configuration.GetConnectionString("DatabaseConnection");
+            var connection = Configuration.GetConnectionString("TamanakaConnectionString");
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
         }
 
