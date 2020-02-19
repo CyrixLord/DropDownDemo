@@ -1,5 +1,6 @@
 ﻿@model DropDownDemo.Models.Category
-@{ 
+@{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <form asp-controller="Demo" asp-action="Index" method="post" class="form-horizontal" role="form">
         <div class="form-group">
             <div class="row">
@@ -41,17 +42,17 @@
             </div>
         </div>
 
-                    <!-- submission -->
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-lg-4">
-                                <input id="Submit1" type="submit" value="submit" />
-                            </div>
-                        </div>
-                    </div>
+        <!-- submission -->
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <input id="Submit1" type="submit" value="submit" />
+                </div>
+            </div>
+        </div>
     </form>
 }
-<script src="~/lib/jquery/dist/jquery.js"></script>
+
 
 <script type="text/javascript">
     // this inserts 'select into the dropdown boxes on initial page load
@@ -71,10 +72,12 @@
         $.getJSON(url, { CategoryID: $(ddlsource).val() }, function (data) {
             var items = '';
             $("#SubCategoryID").empty();
+            console.log("pit");
+            console.log(data); // so the data was captured here properly, its not putting it back in the dropdown
             $.each(data, function (i, subcategory) {
                 items += "<option value='" + subcategory.value + "'>" + subcategory.text + "</option>";
             });
-            $('#SubCaegoryID').html(items);
+            $('#SubCategoryID').html(items); // oops i had a typo  in SubCategory that kept the list from being displayed :()
         });
     });
 
